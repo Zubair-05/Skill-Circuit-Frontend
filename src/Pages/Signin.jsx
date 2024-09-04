@@ -1,6 +1,10 @@
 import React from 'react';
 
 const Signin = () => {
+
+    const loginWithGoogle = () => {
+        window.location.href = 'http://localhost:3000/auth/google';
+    }
     return (
         <div className="h-screen flex justify-center items-center bg-gray-100">
             <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-md">
