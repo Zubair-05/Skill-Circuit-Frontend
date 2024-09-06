@@ -7,9 +7,8 @@ import Signup from './pages/Signup';
 import Courses from './pages/Courses';
 import CourseDetails from './pages/CourseDetails';
 import Navbar from './components/Navbar';
-import CourseMetadataForm from "./Pages/CourseMetadataForm.jsx";
-import CourseContentForm from "./Pages/CourseContentForm.jsx";
-import Footer from "./Components/Footer.jsx"; // Assuming you have a Navbar component
+import Footer from "./Components/Footer.jsx";
+import CreateCourse from "./Pages/CreateCourse.jsx"; // Assuming you have a Navbar component
 
 function App() {
   return (
@@ -17,7 +16,7 @@ function App() {
         <Navbar /> {/* Add the Navbar component */}
         {/*<div className="container mx-auto px-4 py-6">*/}
           <Routes>
-            <Route path="/" element={<CourseMetadataForm />} />
+            <Route path="/" element={<CreateCourse />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/courses" element={<Courses />} />
