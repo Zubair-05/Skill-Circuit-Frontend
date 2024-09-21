@@ -1,10 +1,40 @@
-import React, {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button} from "@/Components/ui/button.jsx";
 import {Input} from "@/Components/ui/input.jsx";
 import {Textarea} from "@/Components/ui/textarea.jsx";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import {setCategory, setCourseDate, setDescription, setId, setTitle} from "@/store/features/courseSlice.js";
+import {setChapter, setChapterId} from "@/store/features/videoSlice.js";
 
 const CreateCourse = () => {
+
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const path = window.location.pathname;
+    const id = path.split('/').pop();
+    console.log(`id is`, id);
+    const getCourseDetails = async () => {
+        try{
+            const path = process.env.BASE_URL + `/course`;
+            const response = await axios.get(path, {
+                withCredentials: true,
+                params : {
+                    id
+                }
+            })
+            dispatch(setCourseDate(response.data.course))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        getCourseDetails();
+    }, []);
+    const {title, description, category, price, imageUrl, courseChapters} = useSelector(state => state.course);
+
     const [courseTitle, setCourseTitle] = useState("Cinematic Techniques Edited");
     const [courseDescription, setCourseDescription] = useState("This is a course on Cinematic Techniques");
     const [isTitleEditable, setIsTitleEditable] = useState(false);
@@ -21,16 +51,31 @@ const CreateCourse = () => {
     ]);
     const [coursePrice, setCoursePrice] = useState(93.0);
 
-    const handleAddChapter = () => {
-        const newChapter = {id: chapters.length + 1, name: "New Chapter", status: "Draft"};
-        setChapters([...chapters, newChapter]);
+    const handleAddChapter = async () => {
+        // navigate(`/video-upload`)
+        try {
+            console.log(`base url is : `, process.env.BASE_URL)
+            const url = process.env.BASE_URL + `/course/chapter/create`;
+            const response = await axios.post(url,
+                {
+                    courseId: id
+                },
+                {
+                    withCredentials: true,
+                })
+            const chapterId = response?.data?.chapter;
+            navigate(`video-upload/${chapterId}`);
+            dispatch(setChapter({}));
+            dispatch(setChapterId(chapterId));
+        } catch (e) {
+            console.log(e)
+        }
     };
 
-    const handleEditChapter = (id, newName) => {
-        const updatedChapters = chapters.map((chapter) =>
-            chapter.id === id ? {...chapter, name: newName} : chapter
-        );
-        setChapters(updatedChapters);
+    const handleEditChapter = (chapter) => {
+
+        dispatch(setChapter(chapter));
+        navigate(`video-upload/${chapter._id}`);
     };
 
     const triggerFileInput = () => {
@@ -55,7 +100,7 @@ const CreateCourse = () => {
                 const upload = await axios.put(url, {
                     selectedImage
                 }, {
-                    headers:{
+                    headers: {
                         "Content-Type": selectedImage.type
                     }
                 })
@@ -68,7 +113,7 @@ const CreateCourse = () => {
                 } else {
                     alert('Error uploading the image');
                 }
-            }  catch (error) {
+            } catch (error) {
                 console.error('Error uploading image:', error);
             } finally {
                 setUploading(false);
@@ -77,7 +122,7 @@ const CreateCourse = () => {
     };
 
     return (
-        <div >
+        <div>
             <div><h2 className="text-2xl p-4 ml-4 font-semibold">Customize your course</h2></div>
             <div className="grid grid-cols-2 gap-6 p-6">
                 {/* Left Column: Customize Course Section */}
@@ -102,11 +147,11 @@ const CreateCourse = () => {
                             {isTitleEditable ? (
                                 <Input
                                     value={courseTitle}
-                                    onChange={(e) => setCourseTitle(e.target.value)}
+                                    onChange={(e) => dispatch(setTitle(e.target.value))}
                                     className="w-full"
                                 />
                             ) : (
-                                <p className="w-full">{courseTitle}</p>
+                                <p className="w-full">{title}</p>
                             )}
                         </div>
 
@@ -125,11 +170,11 @@ const CreateCourse = () => {
                             {isDescriptionEditable ? (
                                 <Textarea
                                     value={courseDescription}
-                                    onChange={(e) => setCourseDescription(e.target.value)}
+                                    onChange={(e) => dispatch(setDescription(e.target.value))}
                                     className="w-full"
                                 />
                             ) : (
-                                <p className="w-full">{courseDescription}</p>
+                                <p className="w-full">{description}</p>
                             )}
                         </div>
 
@@ -171,9 +216,10 @@ const CreateCourse = () => {
                                 <Input
                                     className="w-full"
                                     placeholder="e.g., Photography"
+                                    onChange={(e) => dispatch(setCategory(e.target.value))}
                                 />
                             ) : (
-                                <p className="w-full">Photography</p>
+                                <p className="w-full">{category}</p>
                             )}
                         </div>
                     </div>
@@ -185,27 +231,23 @@ const CreateCourse = () => {
                     <div className="mb-4 p-4 rounded-lg shadow-md bg-gray-100">
                         <h2 className="text-xl font-semibold mb-4">Course chapters</h2>
                         <div className="space-y-2">
-                            {chapters.map((chapter) => (
+                            {courseChapters?.map((chapter) => (
                                 <div
                                     key={chapter.id}
                                     className="flex items-center justify-between p-2 bg-blue-100 rounded-lg"
                                 >
                                     <div>
-                                        <p>{chapter.name}</p>
+                                        <p>{chapter.title}</p>
                                         {chapter.free && <span className="text-xs text-gray-500">Free</span>}
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                    <span
-                                        className={`text-xs px-2 py-1 rounded-lg ${
-                                            chapter.status === "Published"
-                                                ? "bg-green-100 text-green-600"
-                                                : "bg-gray-100"
-                                        }`}
-                                    >
-                                        {chapter.status}
-                                    </span>
+                                        {chapter.freePreview && <span
+                                            className={`text-xs px-2 py-1 rounded-lg bg-green-100 text-green-600`}
+                                        >
+                                        Free
+                                    </span>}
                                         <Button variant="outline" size="sm"
-                                                onClick={() => handleEditChapter(chapter.id)}>
+                                                onClick={() => handleEditChapter(chapter)}>
                                             Edit
                                         </Button>
                                     </div>
