@@ -8,7 +8,8 @@ const courseSlice = createSlice({
         description:'',
         category:'',
         price:'',
-        imageUrl:'',
+        imageUrl:'https://picsum.photos/seed/picsum/200/300',
+        isPublished : false,
         courseChapters:[]
     },
     reducers: {
@@ -31,18 +32,33 @@ const courseSlice = createSlice({
         setImageUrl: (state, action) => {
             state.imageUrl = action.payload
         },
+        setIsPublished: (state, action) => {
+            state.published = action.payload
+        },
         addCourseChapters: (state, action) => {
             state.courseChapters.push(action.payload)
         },
         setCourseDate : (state, action) => {
-            const {_id, title, description, category, price, imageUrl, modules} = action.payload
+            const {_id, title, description, category, price, thumbnail, modules} = action.payload
             state.courseId = _id;
             state.courseChapters = modules;
             state.title = title;
             state.description = description;
             state.price = price;
-            state.imageUrl = imageUrl;
+            state.imageUrl = thumbnail;
             state.category = category;
+        },
+        updateChapter: (state, action) => {
+            console.log(action.payload);
+            const { chapterId, title, isFree } = action.payload;
+
+            state.courseChapters.forEach(chapter => {
+                if (chapterId === chapter._id) {
+                    chapter.title = title;
+                    chapter.isFree = isFree;
+                    chapter.id = chapterId;
+                }
+            });
         }
     }
 })
@@ -55,7 +71,9 @@ export const {
     setPrice,
     setImageUrl,
     addCourseChapters,
-    setCourseDate
+    setCourseDate,
+    setIsPublished,
+    updateChapter
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

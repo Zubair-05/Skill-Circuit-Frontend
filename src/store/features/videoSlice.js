@@ -20,7 +20,7 @@ const videoSlice = createSlice({
             state.description = action.payload;
         },
         setIsFree: (state, action) => {
-            state.freePreview = action.payload;
+            state.isFree = action.payload;
         },
         setVideoUrl: (state, action) => {
             state.videoUrl = action.payload;

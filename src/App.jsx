@@ -1,4 +1,5 @@
 // App.jsx
+import {useState} from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import LandingPage from './pages/LandingPage.jsx';
 import Signin from './pages/Signin.jsx';
@@ -10,13 +11,18 @@ import Footer from "./Components/Footer.jsx";
 import CreateCourse from "./Pages/CreateCourse.jsx";
 import CourseTitlePage from "@/Pages/CourseTitlePage.jsx";
 import VideoUploadPage from "@/Pages/VideoUploadPage.jsx";
-
+import Sidebar from "./Components/Sidebar.jsx"
 
 function App() {
+    const [isTeacherMode, setIsTeacherMode] = useState(false); // State for toggling modes
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
     return (
         <Router>
             <Navbar/> {/* Add the Navbar component */}
             <div className="container mx-auto px-4 py-6">
+
             <Routes>
                 <Route path="/" element={<CourseTitlePage/>}/>
                 <Route path="/course-create/:id" element={<CreateCourse/>}/>

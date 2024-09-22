@@ -1,28 +1,51 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {Button} from "@/Components/ui/button.jsx";
 import {Input} from "@/Components/ui/input.jsx";
 import {Textarea} from "@/Components/ui/textarea.jsx";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
-import {setCategory, setCourseDate, setDescription, setId, setTitle} from "@/store/features/courseSlice.js";
+import {
+    setCategory,
+    setCourseDate,
+    setDescription,
+    setId, setImageUrl,
+    setIsPublished,
+    setPrice,
+    setTitle
+} from "@/store/features/courseSlice.js";
 import {setChapter, setChapterId} from "@/store/features/videoSlice.js";
+import {useDropzone} from 'react-dropzone'
 
 const CreateCourse = () => {
 
-
+    const [isTitleEditable, setIsTitleEditable] = useState(false);
+    const [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
+    const [isCategoryEditable, setIsCategoryEditable] = useState(false);
+    const [isPriceEditable, setIsPriceEditable] = useState(false);
+    const [selectedImage, setSelectedImage] = useState("https://picsum.photos/seed/picsum/200/300");
+    const [uploading, setUploading] = useState(false);
+    const [progress, setProgress] = useState(0);
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    // const onDrop = useCallback(acceptedFiles => {
+    //     // Do something with the files
+    // }, [])
+
+
     const path = window.location.pathname;
-    const id = path.split('/').pop();
-    console.log(`id is`, id);
+    const courseId = path.split('/').pop();
+    const userId = useSelector(state => state.user.userId);
+
+    const {title, description, category, price, imageUrl, courseChapters} = useSelector(state => state.course);
+
     const getCourseDetails = async () => {
-        try{
+        try {
             const path = process.env.BASE_URL + `/course`;
             const response = await axios.get(path, {
                 withCredentials: true,
-                params : {
-                    id
+                params: {
+                    id: courseId
                 }
             })
             dispatch(setCourseDate(response.data.course))
@@ -30,35 +53,28 @@ const CreateCourse = () => {
             console.log(error)
         }
     }
-    useEffect(() => {
-        getCourseDetails();
-    }, []);
-    const {title, description, category, price, imageUrl, courseChapters} = useSelector(state => state.course);
 
-    const [courseTitle, setCourseTitle] = useState("Cinematic Techniques Edited");
-    const [courseDescription, setCourseDescription] = useState("This is a course on Cinematic Techniques");
-    const [isTitleEditable, setIsTitleEditable] = useState(false);
-    const [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
-    const [isCategoryEditable, setIsCategoryEditable] = useState(false);
-    const [selectedImage, setSelectedImage] = useState("https://picsum.photos/seed/picsum/200/300");
-    const [uploading, setUploading] = useState(false);
-
-    const [chapters, setChapters] = useState([
-        {id: 1, name: "Outro", status: "Published"},
-        {id: 2, name: "Introduction", status: "Published", free: true},
-        {id: 3, name: "Exploring the Basics", status: "Published"},
-        {id: 4, name: "Practical Hands-on Activities", status: "Published"},
-    ]);
-    const [coursePrice, setCoursePrice] = useState(93.0);
+    const course = useSelector(state => state.course);
+    const updateCourse = async (isPublished) => {
+        dispatch(setIsPublished(isPublished));
+        try{
+            const url = process.env.BASE_URL + `/courses/${courseId}/update`;
+            const response = await axios.put(url, course, {
+                withCredentials: true,
+            })
+            console.log(`course updated successfully`, response.data);
+        } catch (e) {
+            console.log(`error updating the course`);
+        }
+    }
 
     const handleAddChapter = async () => {
-        // navigate(`/video-upload`)
         try {
             console.log(`base url is : `, process.env.BASE_URL)
             const url = process.env.BASE_URL + `/course/chapter/create`;
             const response = await axios.post(url,
                 {
-                    courseId: id
+                    courseId: courseId
                 },
                 {
                     withCredentials: true,
@@ -73,7 +89,6 @@ const CreateCourse = () => {
     };
 
     const handleEditChapter = (chapter) => {
-
         dispatch(setChapter(chapter));
         navigate(`video-upload/${chapter._id}`);
     };
@@ -82,48 +97,87 @@ const CreateCourse = () => {
         document.getElementById("fileInput").click();
     };
 
-    // Handle file selection and image preview
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            // For preview, you can generate a temporary URL for the selected image
-            const imageUrl = URL.createObjectURL(file);
-            setSelectedImage(imageUrl);
-            try {
-                const res = await axios.post('http://localhost:3000/upload-image', {
-                    fileName: selectedImage.name,         // Send file name
-                    contentType: selectedImage.type,
-                });
-
-                const {url} = await res.json();
-
-                const upload = await axios.put(url, {
-                    selectedImage
-                }, {
-                    headers: {
-                        "Content-Type": selectedImage.type
-                    }
-                })
-
-                if (upload.ok) {
-                    // Step 3: Set the image URL for display (remove the query params from the presigned URL)
-                    const uploadedImageUrl = url.split('?')[0];
-                    setSelectedImage(uploadedImageUrl);
-                    alert('Image uploaded successfully!');
-                } else {
-                    alert('Error uploading the image');
-                }
-            } catch (error) {
-                console.error('Error uploading image:', error);
-            } finally {
-                setUploading(false);
-            }
+    const handleFileSelect = async (e) => {
+        console.log(`file is selected`)
+        const acceptedFiles = e.target.files;
+        if (acceptedFiles.length === 0) return;
+        const file = acceptedFiles[0];
+        console.log(`file with fileName : ${file.name} and type : ${file.type} selected`);
+        const filePath = `${userId}/${courseId}/thumbnail`
+        try {
+            const path = process.env.BASE_URL + `/upload-file`;
+            const response = await axios.post(path, {
+                // fileName: file.name,
+                fileName: filePath,
+                fileType: file.type
+            }, {
+                withCredentials: true,
+            })
+            const {url, key} = response.data;
+            await uploadFileToS3(url, file, filePath);
+            console.log(`fetched pre-signed url successfully`);
+        } catch (e) {
+            console.log(`error fetching url`, e);
         }
-    };
+    }
+
+    const uploadFileToS3 = async (url, file, filePath) => {
+        setUploading(true);
+        try {
+            console.log(`file details:`, file);
+            // const url = process.env.BASE_URL + `/course/${file.name}`;
+            const response = await axios.put(url, file, {
+                    headers: {
+                        'Content-Type': file.type, // Set the correct content type of the file
+                    },
+                    // withCredentials: true,
+                    onUploadProgress: progressEvent => {
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        );
+                        setProgress(percentCompleted);
+                    }
+                },
+            )
+            dispatch(setImageUrl(filePath))
+            console.log(`response on uploading image is`, response);
+            console.log(`file successfully uploaded to s3`)
+        } catch (e) {
+            console.log(`error uploading the file`, e);
+        }
+    }
+
+    useEffect(() => {
+        if (!title) getCourseDetails();
+    }, []);
 
     return (
         <div>
-            <div><h2 className="text-2xl p-4 ml-4 font-semibold">Customize your course</h2></div>
+            <div className="flex items-center justify-between p-4">
+                <h2 className="text-2xl p-4 ml-4 font-semibold">Customize your course</h2>
+                <div className="space-x-2">
+                    <button
+                        className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-lg shadow-md"
+                        onClick={() => updateCourse(false)}
+                    >
+                        Save as Draft
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md"
+                        onClick={() => updateCourse(true)}
+                    >
+                        Publish
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg shadow-md"
+                        onClick={() => {
+                            deleteCourse();
+                        }}
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
             <div className="grid grid-cols-2 gap-6 p-6">
                 {/* Left Column: Customize Course Section */}
                 <div className="space-y-6">
@@ -146,12 +200,12 @@ const CreateCourse = () => {
                             </div>
                             {isTitleEditable ? (
                                 <Input
-                                    value={courseTitle}
+                                    value={title}
                                     onChange={(e) => dispatch(setTitle(e.target.value))}
                                     className="w-full"
                                 />
                             ) : (
-                                <p className="w-full">{title}</p>
+                                <p className="w-full">{(title) ? title : `No title`}</p>
                             )}
                         </div>
 
@@ -169,12 +223,12 @@ const CreateCourse = () => {
                             </div>
                             {isDescriptionEditable ? (
                                 <Textarea
-                                    value={courseDescription}
+                                    value={description}
                                     onChange={(e) => dispatch(setDescription(e.target.value))}
                                     className="w-full"
                                 />
                             ) : (
-                                <p className="w-full">{description}</p>
+                                <p className="w-full">{(description) ? description : `No Description`}</p>
                             )}
                         </div>
 
@@ -187,18 +241,36 @@ const CreateCourse = () => {
                                     id="fileInput"
                                     accept="image/*"
                                     style={{display: "none"}} // Hide the default input
-                                    onChange={handleFileChange}
+                                    onChange={handleFileSelect}
                                 />
                                 <Button variant="outline" onClick={triggerFileInput}>
                                     Upload Image
                                 </Button>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <img src={selectedImage} alt="Course"
+                                <img src={course.imageUrl} alt="Course"
                                      className="w-full h-64 object-cover rounded-lg"/>
-
                             </div>
                         </div>
+
+                        {/*                    <div*/}
+                        {/*                        {...getRootProps()}*/}
+                        {/*                        className={`border-2 border-dashed rounded-lg p-6 cursor-pointer */}
+                        {/*${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'} */}
+                        {/*transition duration-300 ease-in-out`}*/}
+
+                        {/*                    >*/}
+                        {/*                        <input {...getInputProps()} />*/}
+                        {/*                        {*/}
+                        {/*                            isDragActive ? (*/}
+                        {/*                                <p className="text-blue-500">Drop the files here ...</p>*/}
+                        {/*                            ) : (*/}
+                        {/*                                <p className="text-gray-500">Drag 'n' drop some files here, or click to select*/}
+                        {/*                                    files</p>*/}
+                        {/*                            )*/}
+                        {/*                        }*/}
+                        {/*                    </div>*/}
+
 
                         {/* Course Category */}
                         <div className="mb-4 p-4 rounded-lg shadow-md bg-gray-100">
@@ -215,11 +287,12 @@ const CreateCourse = () => {
                             {isCategoryEditable ? (
                                 <Input
                                     className="w-full"
+                                    value={category}
                                     placeholder="e.g., Photography"
                                     onChange={(e) => dispatch(setCategory(e.target.value))}
                                 />
                             ) : (
-                                <p className="w-full">{category}</p>
+                                <p className="w-full">{(category) ? category : `No category`}</p>
                             )}
                         </div>
                     </div>
@@ -238,10 +311,9 @@ const CreateCourse = () => {
                                 >
                                     <div>
                                         <p>{chapter.title}</p>
-                                        {chapter.free && <span className="text-xs text-gray-500">Free</span>}
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        {chapter.freePreview && <span
+                                        {chapter.isFree && <span
                                             className={`text-xs px-2 py-1 rounded-lg bg-green-100 text-green-600`}
                                         >
                                         Free
@@ -259,18 +331,28 @@ const CreateCourse = () => {
                         </div>
                     </div>
 
-                    {/* Course Pricing Section */}
+                    {/* Course Price */}
                     <div className="mb-4 p-4 rounded-lg shadow-md bg-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Sell your course</h2>
                         <div className="flex items-center space-x-2">
-                            <Input
-                                type="number"
-                                value={coursePrice}
-                                onChange={(e) => setCoursePrice(e.target.value)}
-                                className="w-24"
-                            />
-                            <Button variant="outline">Edit price</Button>
+                            <h3 className="text-lg w-full">Price</h3>
+
+                            <Button
+                                variant="outline"
+                                onClick={() => setIsPriceEditable(!isPriceEditable)}
+                            >
+                                {isPriceEditable ? "Save" : "Edit Price"}
+                            </Button>
                         </div>
+                        {isPriceEditable ? (
+                            <Input
+                                className="w-full"
+                                value={price}
+                                placeholder="999"
+                                onChange={(e) => dispatch(setPrice(e.target.value))}
+                            />
+                        ) : (
+                            <p className="w-full">{(price) ? price : `0`}</p>
+                        )}
                     </div>
                 </div>
             </div>

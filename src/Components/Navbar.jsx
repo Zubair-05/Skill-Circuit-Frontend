@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {useNavigate} from "react-router-dom";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {useDispatch, useSelector} from "react-redux";
+import {setUserDetails} from "@/store/features/userSlice.js";
 
 function Navbar() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     useEffect(() => {
         fetch('http://localhost:3000/auth/status', {
             method: 'GET',
@@ -13,6 +25,7 @@ function Navbar() {
             .then(data => {
                 if (data.isAuthenticated) {
                     setIsAuthenticated(true);
+                    dispatch(setUserDetails(data.user.id));
                 } else {
                     setIsAuthenticated(false);
                     navigate('/signup');
@@ -39,17 +52,28 @@ function Navbar() {
     };
 
     return (
-        <header className="bg-white shadow-md">
-            <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div className="text-3xl font-bold text-gray-800">CourseMart</div>
+        <header className="bg-white shadow-md ">
+            <nav className="container mx-auto px-6 py-4 flex justify-between items-center bg-gray-100">
+                <div className="text-3xl font-bold text-gray-800">Skill-Circuit</div>
                 <div>
                     {isAuthenticated ? (
-                        <button
-                            onClick={handleLogout}
-                            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-                        >
-                            Logout
-                        </button>
+
+                        <DropdownMenu className="mr-4">
+                            <DropdownMenuTrigger>
+                                <Avatar className="cursor-pointer" onClick={handleLogout}>
+                                    <AvatarImage src="https://github.com/shadcn.png"/>
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>Profile</DropdownMenuItem>
+                                <DropdownMenuItem>Billing</DropdownMenuItem>
+                                <DropdownMenuItem>Team</DropdownMenuItem>
+                                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     ) : (
                         <>
                             <a href="/login" className="text-gray-700 font-semibold hover:text-blue-500 mx-4">
