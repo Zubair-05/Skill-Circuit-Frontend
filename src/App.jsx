@@ -12,6 +12,9 @@ import CreateCourse from "./Pages/CreateCourse.jsx";
 import CourseTitlePage from "@/Pages/CourseTitlePage.jsx";
 import VideoUploadPage from "@/Pages/VideoUploadPage.jsx";
 import Sidebar from "./Components/Sidebar.jsx"
+import StripeConnect from "@/Pages/StripeConnect.jsx";
+import Cart from "@/Pages/Cart.jsx";
+import Profile from "@/Pages/Profile.jsx";
 
 function App() {
     const [isTeacherMode, setIsTeacherMode] = useState(false); // State for toggling modes
@@ -28,9 +31,12 @@ function App() {
                 <Route path="/course-create/:id" element={<CreateCourse/>}/>
                 <Route path="/signin" element={<Signin/>}/>
                 <Route path="/signup" element={<Signup/>}/>
+                <Route path="/stripe-connect" element={<StripeConnect/>}/>
                 <Route path="/courses" element={<Courses/>}/>
                 <Route path="/courses/:id" element={<CourseDetails/>}/>
                 <Route path='/course-create/:id/video-upload/:id1' element={<VideoUploadPage/>}/>
+                <Route path="/cart" element={<Cart/>}/>
+                <Route path={"/profile"} element={<Profile/>}/>
             </Routes>
             </div>
             <Footer/>

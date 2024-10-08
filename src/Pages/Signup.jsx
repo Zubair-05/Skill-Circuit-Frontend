@@ -32,6 +32,7 @@ function SignUp() {
         });
         navigate('/login'); // Redirect to login page or wherever appropriate
     };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -83,17 +84,17 @@ function SignUp() {
                     />
                     Sign up with Google
                 </button>
-                <button
-                    className="flex items-center justify-center w-full bg-white border border-gray-300 text-gray-700 py-2 rounded-lg shadow-md hover:bg-gray-100 transition-colors"
-                    onClick={handleLogout}
-                >
-                    <img
-                        src="https://developers.google.com/identity/images/g-logo.png"
-                        alt="Google Logo"
-                        className="w-5 h-5 mr-2"
-                    />
-                    Logout
-                </button>
+                {/*<button*/}
+                {/*    className="flex items-center justify-center w-full bg-white border border-gray-300 text-gray-700 py-2 rounded-lg shadow-md hover:bg-gray-100 transition-colors"*/}
+                {/*    onClick={handleLogout}*/}
+                {/*>*/}
+                {/*    <img*/}
+                {/*        src="https://developers.google.com/identity/images/g-logo.png"*/}
+                {/*        alt="Google Logo"*/}
+                {/*        className="w-5 h-5 mr-2"*/}
+                {/*    />*/}
+                {/*    Logout*/}
+                {/*</button>*/}
                 <p className="mt-6 text-gray-600 text-center">
                     Already have an account? <span className="text-blue-500 cursor-pointer"
                                                    onClick={() => navigate('/signin')}>Log in</span>

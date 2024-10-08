@@ -36,7 +36,7 @@ function Navbar() {
             });
     }, [navigate]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         fetch('http://localhost:3000/logout', {
             method: 'GET',
             credentials: 'include',
@@ -68,10 +68,11 @@ function Navbar() {
                             <DropdownMenuContent>
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>Profile</DropdownMenuItem>
-                                <DropdownMenuItem>Billing</DropdownMenuItem>
-                                <DropdownMenuItem>Team</DropdownMenuItem>
-                                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/courses')}>Courses</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/create-course')}>Create Course</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/cart')}>Cart</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
+                                <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     ) : (
