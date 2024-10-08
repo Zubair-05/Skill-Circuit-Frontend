@@ -1,18 +1,18 @@
 // App.jsx
 import {useState} from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Signin from './pages/Signin.jsx';
+import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Courses from './pages/Courses';
 import CourseDetails from './pages/CourseDetails';
 import Navbar from './components/Navbar';
-import Footer from "./Components/Footer.jsx";
-import CreateCourse from "./Pages/CreateCourse.jsx";
-import CourseTitlePage from "@/Pages/CourseTitlePage.jsx";
-import VideoUploadPage from "@/Pages/VideoUploadPage.jsx";
-import StripeConnect from "@/Pages/StripeConnect.jsx";
-import Cart from "@/Pages/Cart.jsx";
-import Profile from "@/Pages/Profile.jsx";
+import Footer from "./Components/Footer";
+import CreateCourse from "./Pages/CreateCourse";
+import CourseTitlePage from "@/Pages/CourseTitlePage";
+import VideoUploadPage from "@/Pages/VideoUploadPage";
+import StripeConnect from "@/Pages/StripeConnect";
+import Cart from "@/Pages/Cart";
+import Profile from "@/Pages/Profile";
 
 function App() {
     const [isTeacherMode, setIsTeacherMode] = useState(false); // State for toggling modes
