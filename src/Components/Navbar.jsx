@@ -17,7 +17,8 @@ function Navbar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        fetch('http://localhost:3000/auth/status', {
+        const url = `${process.env.BASE_URL}/auth/status`;
+        fetch(url, {
             method: 'GET',
             credentials: 'include', // Include cookies in the request
         })
@@ -37,7 +38,8 @@ function Navbar() {
     }, [navigate]);
 
     const handleLogout = async () => {
-        fetch('http://localhost:3000/logout', {
+        const url = process.env.BASE_URL + `/logout`;
+        fetch(url, {
             method: 'GET',
             credentials: 'include',
         })

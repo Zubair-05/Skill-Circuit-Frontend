@@ -3,7 +3,7 @@ import React from 'react';
 const Signin = () => {
 
     const loginWithGoogle = () => {
-        window.location.href = 'http://localhost:3000/auth/google';
+        window.location.href = `${process.env.BASE_URL}/auth/google`;
     }
     return (
         <div className="h-screen flex justify-center items-center bg-gray-100">

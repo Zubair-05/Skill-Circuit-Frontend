@@ -10,7 +10,8 @@ function Courses() {
     const [courses, setCourses] = useState([]);
     const fetchCourses = async () => {
         try {
-            const response = await fetch('http://localhost:3000/courses', {
+            const url = `${process.env.BASE_URL}/courses`;
+            const response = await fetch(url, {
                 method: 'GET',
                 credentials: 'include', // This ensures cookies (including the session cookie) are sent
             });

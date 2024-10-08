@@ -1,7 +1,6 @@
 // App.jsx
 import {useState} from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import LandingPage from './pages/LandingPage.jsx';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup';
 import Courses from './pages/Courses';
@@ -11,7 +10,6 @@ import Footer from "./Components/Footer.jsx";
 import CreateCourse from "./Pages/CreateCourse.jsx";
 import CourseTitlePage from "@/Pages/CourseTitlePage.jsx";
 import VideoUploadPage from "@/Pages/VideoUploadPage.jsx";
-import Sidebar from "./Components/Sidebar.jsx"
 import StripeConnect from "@/Pages/StripeConnect.jsx";
 import Cart from "@/Pages/Cart.jsx";
 import Profile from "@/Pages/Profile.jsx";

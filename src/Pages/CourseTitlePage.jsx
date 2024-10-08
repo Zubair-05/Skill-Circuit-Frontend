@@ -26,7 +26,8 @@ const CourseTitlePage = () => {
             setError('');
 
             // API call to save the course title
-            const response = await axios.post('http://localhost:3000/courses/create',
+            const url = `${process.env.BASE_URL}/courses/create`;
+            const response = await axios.post(url,
                 {
                     title
                 },

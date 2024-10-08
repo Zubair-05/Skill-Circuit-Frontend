@@ -5,33 +5,10 @@ function SignUp() {
 
     const loginWithGoogle = async () => {
         console.log("Login with Google")
-        window.location.href = "http://localhost:3000/auth/google";
-        // try{
-        //     const response = await axios.get('http://localhost:3000/auth/google');
-        //     navigate('/courses')
-        //     console.log(response)
-        // } catch (err){
-        //     console.log(err)
-        // }
+        window.location.href = `${process.env.BASE_URL}/auth/google`;
     }
 
-    // const logout = async () => {
-    //     console.log("Logout");
-    //     try{
-    //         const response = await axios.get('http://localhost:3000/logout');
-    //         console.log(response)
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }
 
-    const handleLogout = async () => {
-        await fetch('http://localhost:3000/logout', {
-            method: 'GET',
-            credentials: 'include'
-        });
-        navigate('/login'); // Redirect to login page or wherever appropriate
-    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
