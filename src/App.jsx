@@ -27,7 +27,7 @@ function App() {
             <div className="container mx-auto px-4 py-6">
 
             <Routes>
-                <Route path="/" element={<CourseTitlePage/>}/>
+                <Route path="/create-course" element={<CourseTitlePage/>}/>
                 <Route path="/course-create/:id" element={<CreateCourse/>}/>
                 <Route path="/signin" element={<Signin/>}/>
                 <Route path="/signup" element={<Signup/>}/>

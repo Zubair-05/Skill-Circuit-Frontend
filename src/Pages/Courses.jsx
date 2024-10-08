@@ -71,7 +71,7 @@ function Courses() {
                                 </span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-lg font-bold">{course.price}</span>
+                                <span className="text-lg font-bold">₹{course.price}</span>
                             </div>
                         </div>
                     </div>
