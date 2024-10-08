@@ -1,7 +1,7 @@
 // App.jsx
 import {useState} from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Signin from './pages/Signin';
+import Signin from './Pages/Signin.jsx';
 import Signup from './pages/Signup';
 import Courses from './pages/Courses';
 import CourseDetails from './pages/CourseDetails';
