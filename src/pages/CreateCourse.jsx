@@ -1,7 +1,7 @@
 import {useEffect, useState, useCallback} from "react";
-import {Button} from "@/Components/ui/button.jsx";
-import {Input} from "@/Components/ui/input.jsx";
-import {Textarea} from "@/Components/ui/textarea.jsx";
+import {Button} from "@/components/ui/button.jsx";
+import {Input} from "@/components/ui/input.jsx";
+import {Textarea} from "@/components/ui/textarea.jsx";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";

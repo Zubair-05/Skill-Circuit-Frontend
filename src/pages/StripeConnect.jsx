@@ -1,7 +1,7 @@
-import {Card, CardHeader, CardTitle, CardDescription, CardContent} from "@/Components/ui/card.jsx";
-import {Label} from "@/Components/ui/label.jsx";
-import {Button} from "@/Components/ui/button.jsx";
-import {Checkbox} from "@/Components/ui/checkbox.jsx"
+import {Card, CardHeader, CardTitle, CardDescription, CardContent} from "@/components/ui/card.jsx";
+import {Label} from "@/components/ui/label.jsx";
+import {Button} from "@/components/ui/button.jsx";
+import {Checkbox} from "@/components/ui/checkbox.jsx"
 import {useEffect} from "react";
 
 

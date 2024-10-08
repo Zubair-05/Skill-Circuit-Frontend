@@ -9,7 +9,7 @@ import {addCourseChapters, setImageUrl, updateChapter} from "@/store/features/co
 import {setChapter, setDescription, setIsFree, setTitle, setVideoUrl} from "@/store/features/videoSlice.js";
 import axios from "axios";
 import {useEffect, useState} from "react";
-import {Progress} from "@/Components/ui/progress.jsx";
+import {Progress} from "@/components/ui/progress.jsx";
 
 const ChapterForm = () => {
 

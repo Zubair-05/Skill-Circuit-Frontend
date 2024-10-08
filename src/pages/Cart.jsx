@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button }from '@/Components/ui/button.jsx';
-import {Card} from '@/Components/ui/card.jsx'
+import { Button }from '@/components/ui/button.jsx';
+import {Card} from '@/components/ui/card.jsx'
 import {getApiCall, postApiCall} from "@/utils/apiHelper.js";
 import {setCartData, removeFromCart, clearCart, } from "@/store/features/cartSlice.js";
 
