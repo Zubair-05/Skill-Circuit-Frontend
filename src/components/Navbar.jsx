@@ -70,7 +70,7 @@ function Navbar() {
                             <DropdownMenuContent>
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => navigate('/courses')}>Courses</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/')}>Courses</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => navigate('/create-course')}>Create Course</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => navigate('/cart')}>Cart</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>

@@ -30,7 +30,7 @@ function App() {
                 <Route path="/signin" element={<Signin/>}/>
                 <Route path="/signup" element={<Signup/>}/>
                 <Route path="/stripe-connect" element={<StripeConnect/>}/>
-                <Route path="/courses" element={<Courses/>}/>
+                <Route path="/" element={<Courses/>}/>
                 <Route path="/courses/:id" element={<CourseDetails/>}/>
                 <Route path='/course-create/:id/video-upload/:id1' element={<VideoUploadPage/>}/>
                 <Route path="/cart" element={<Cart/>}/>
