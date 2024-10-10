@@ -22,6 +22,7 @@ export const postApiCall = async (path, body, params, query, headers) => {
             withCredentials: true,
             params: params
         })
+        console.log(response)
     } catch (err){
         console.log(err);
         throw err;

@@ -45,7 +45,7 @@ function Navbar() {
         })
             .then(() => {
                 setIsAuthenticated(false);
-                navigate('/signup');
+                navigate('/signin');
                 // Optionally redirect the user to the homepage or login page
             })
             .catch(err => {
