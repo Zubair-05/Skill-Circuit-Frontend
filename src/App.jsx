@@ -13,7 +13,7 @@ import VideoUploadPage from "@/pages/VideoUploadPage.jsx";
 import StripeConnect from "@/pages/StripeConnect.jsx";
 import Cart from "@/pages/Cart.jsx";
 import Profile from "@/pages/Profile.jsx";
-
+import PrivateRoutes from "./utils/PrivateRoute.jsx"
 function App() {
     const [isTeacherMode, setIsTeacherMode] = useState(false); // State for toggling modes
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,24 +21,26 @@ function App() {
 
     return (
         <Router>
-            <Navbar/> {/* Add the Navbar component */}
+            <Navbar />
             <div className="container mx-auto px-4 py-6">
+                <Routes>
+                    <Route path="/signin" element={<Signin />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/" element={<Courses />} />
+                    <Route path="/courses/:id" element={<CourseDetails />} />
 
-            <Routes>
-                <Route path="/create-course" element={<CourseTitlePage/>}/>
-                <Route path="/course-create/:id" element={<CreateCourse/>}/>
-                <Route path="/signin" element={<Signin/>}/>
-                <Route path="/signup" element={<Signup/>}/>
-                <Route path="/stripe-connect" element={<StripeConnect/>}/>
-                <Route path="/" element={<Courses/>}/>
-                <Route path="/courses/:id" element={<CourseDetails/>}/>
-                <Route path='/course-create/:id/video-upload/:id1' element={<VideoUploadPage/>}/>
-                <Route path="/cart" element={<Cart/>}/>
-                <Route path={"/profile"} element={<Profile/>}/>
-            </Routes>
+                    {/* Protected routes */}
+                    <Route element={<PrivateRoutes />}>
+                        <Route path="/create-course" element={<CourseTitlePage />} />
+                        <Route path="/course-create/:id" element={<CreateCourse />} />
+                        <Route path='/course-create/:id/video-upload/:id1' element={<VideoUploadPage />} />
+                        <Route path="/cart" element={<Cart />} />
+                        {/* Add other protected routes here */}
+                    </Route>
+                </Routes>
             </div>
-            <Footer/>
         </Router>
+
     );
 }
 
