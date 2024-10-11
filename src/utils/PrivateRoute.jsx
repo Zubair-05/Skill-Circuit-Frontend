@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setUserDetails } from './redux/actions'; // Your action to set user details
+import {useDispatch, useSelector} from 'react-redux';
+import {setIsAuthenticated} from "@/store/features/authSlice.js";
 
-const PrivateRoutes = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(null); // Start with null to handle loading state
+const PrivateRoutes = () => { // Start with null to handle loading state
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     useEffect(() => {
+
         const checkAuthStatus = async () => {
             try {
                 const url = `${process.env.BASE_URL}/auth/status`;

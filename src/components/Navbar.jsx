@@ -13,29 +13,30 @@ import {useDispatch, useSelector} from "react-redux";
 import {setUserDetails} from "@/store/features/userSlice.js";
 
 function Navbar() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
     const dispatch = useDispatch();
-    useEffect(() => {
-        const url = `${process.env.BASE_URL}/auth/status`;
-        fetch(url, {
-            method: 'GET',
-            credentials: 'include', // Include cookies in the request
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.isAuthenticated) {
-                    setIsAuthenticated(true);
-                    dispatch(setUserDetails(data.user.id));
-                } else {
-                    setIsAuthenticated(false);
-                    navigate('/signup');
-                }
-            })
-            .catch(err => {
-                console.error('Error checking authentication status:', err);
-            });
-    }, [navigate]);
+    // useEffect(() => {
+    //     const url = `${process.env.BASE_URL}/auth/status`;
+    //     fetch(url, {
+    //         method: 'GET',
+    //         credentials: 'include', // Include cookies in the request
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data.isAuthenticated) {
+    //                 setIsAuthenticated(true);
+    //                 dispatch(setUserDetails(data.user.id));
+    //             } else {
+    //                 setIsAuthenticated(false);
+    //                 navigate('/signup');
+    //             }
+    //         })
+    //         .catch(err => {
+    //             console.error('Error checking authentication status:', err);
+    //         });
+    // }, [navigate]);
 
     const handleLogout = async () => {
         const url = process.env.BASE_URL + `/logout`;
