@@ -23,7 +23,6 @@ const CreateCourse = () => {
     const [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
     const [isCategoryEditable, setIsCategoryEditable] = useState(false);
     const [isPriceEditable, setIsPriceEditable] = useState(false);
-    const [selectedImage, setSelectedImage] = useState("https://picsum.photos/seed/picsum/200/300");
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
     const navigate = useNavigate();

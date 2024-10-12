@@ -23,16 +23,21 @@ const ChapterForm = () => {
     const [progress, setProgress] = useState(0);
     const [sampleVideo, setSampleVideo] = useState();
 
+
+
     const handlePublish = async () => {
         try {
             const path = process.env.BASE_URL + `/course/chapter/add/content`
             const response = await axios.post(path, {
-                chapter: video
+                chapter: {
+                    ...video,
+                    videoUrl: video.videoUrl.replace(process.env.S3_BASE_URL, "")
+                }
             }, {
                 withCredentials: true,
             })
             console.log(`course upload`, response);
-            dispatch(updateChapter(video))
+            dispatch(updateChapter({}))
             navigate(`/course-create/${courseId}`);
 
         } catch (error) {
@@ -74,6 +79,7 @@ const ChapterForm = () => {
             })
             const {url, fileUrl} = response.data;
             await uploadFileToS3(url, file, fileUrl);
+            dispatch(setVideoUrl(filePath));
             console.log(`fetched pre-signed url successfully`);
         } catch (e) {
             console.log(`error fetching url`, e);
@@ -202,7 +208,7 @@ const ChapterForm = () => {
                             {/* Conditionally render the video or the icon with upload button */}
                             {video.videoUrl ? (
                                 <video
-                                    src={video.videoUrl}
+                                    src={video.videoUrl || sampleVideo}
                                     className="absolute inset-0 w-full h-full object-cover"
                                     controls  // Optionally add controls to the video
                                 />

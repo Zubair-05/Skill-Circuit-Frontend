@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {setIsAuthenticated} from "@/store/features/authSlice.js";
+import {setUserDetails} from "@/store/features/userSlice.js";
 
 const PrivateRoutes = () => { // Start with null to handle loading state
     const dispatch = useDispatch();
@@ -20,16 +21,17 @@ const PrivateRoutes = () => { // Start with null to handle loading state
                 const data = await response.json();
 
                 if (data.isAuthenticated) {
-                    setIsAuthenticated(true);
-                    dispatch(setUserDetails(data.user.id)); // Store user details
+                    dispatch(setIsAuthenticated(true));
+                    dispatch(setUserDetails(data.user.id));
+                    console.log(`hello world`)// Store user details
                 } else {
                     setIsAuthenticated(false);
-                    navigate('/signup');
+                    navigate('/signin');
                 }
             } catch (err) {
                 console.error('Error checking authentication status:', err);
                 setIsAuthenticated(false);
-                navigate('/signup'); // Redirect to signup on error
+                navigate('/signin'); // Redirect to signup on error
             }
         };
 

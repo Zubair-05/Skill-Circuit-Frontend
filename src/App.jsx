@@ -24,13 +24,13 @@ function App() {
             <Navbar />
             <div className="container mx-auto px-4 py-6">
                 <Routes>
-                    <Route path="/signin" element={<Signin />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/" element={<Courses />} />
-                    <Route path="/courses/:id" element={<CourseDetails />} />
 
                     {/* Protected routes */}
+                    <Route path="/signin" element={<Signin />} />
+                    <Route path="/signup" element={<Signup />} />
                     <Route element={<PrivateRoutes />}>
+                        <Route path="/" element={<Courses />} />
+                        <Route path="/courses/:id" element={<CourseDetails />} />
                         <Route path="/create-course" element={<CourseTitlePage />} />
                         <Route path="/course-create/:id" element={<CreateCourse />} />
                         <Route path='/course-create/:id/video-upload/:id1' element={<VideoUploadPage />} />

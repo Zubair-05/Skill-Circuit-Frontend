@@ -8,7 +8,7 @@ const courseSlice = createSlice({
         description:'',
         category:'',
         price:'',
-        imageUrl:'https://picsum.photos/seed/picsum/200/300',
+        imageUrl:'',
         isPublished : false,
         courseChapters:[]
     },
