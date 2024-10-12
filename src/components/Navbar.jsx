@@ -55,8 +55,8 @@ function Navbar() {
     };
 
     return (
-        <header className="bg-white shadow-md ">
-            <nav className="container mx-auto px-6 py-4 flex justify-between items-center bg-gray-100">
+        <header className="bg-white shadow-md w-full">
+            <nav className="px-6 py-4 flex justify-between items-center bg-gray-100">
                 <div className="text-3xl font-bold text-gray-800">Skill-Circuit</div>
                 <div>
                     {isAuthenticated ? (

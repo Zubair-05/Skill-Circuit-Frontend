@@ -25,6 +25,7 @@ const CreateCourse = () => {
     const [isPriceEditable, setIsPriceEditable] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [sampleImage, setSampleImage] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const onDrop = useCallback(acceptedFiles => {
@@ -57,8 +58,14 @@ const CreateCourse = () => {
     const updateCourse = async (isPublished) => {
         dispatch(setIsPublished(isPublished));
         try{
+            const filePath = `${userId}/${courseId}/thumbnail`
             const url = process.env.BASE_URL + `/courses/${courseId}/update`;
-            const response = await axios.put(url, course, {
+            const response = await axios.put(url, {
+                course:{
+                    ...course,
+                    imageUrl: filePath
+                }
+            }, {
                 withCredentials: true,
             })
             console.log(`course updated successfully`, response.data);
@@ -112,15 +119,15 @@ const CreateCourse = () => {
             }, {
                 withCredentials: true,
             })
-            const {url, key} = response.data;
-            await uploadFileToS3(url, file, filePath);
+            const {url, fileUrl} = response.data;
+            await uploadFileToS3(url, file, filePath, fileUrl);
             console.log(`fetched pre-signed url successfully`);
         } catch (e) {
             console.log(`error fetching url`, e);
         }
     }
 
-    const uploadFileToS3 = async (url, file, filePath) => {
+    const uploadFileToS3 = async (url, file, filePath, fileUrl) => {
         setUploading(true);
         try {
             console.log(`file details:`, file);
@@ -139,6 +146,7 @@ const CreateCourse = () => {
                 },
             )
             dispatch(setImageUrl(filePath))
+            setSampleImage(fileUrl);
             console.log(`response on uploading image is`, response);
             console.log(`file successfully uploaded to s3`)
         } catch (e) {
@@ -147,7 +155,7 @@ const CreateCourse = () => {
     }
 
     useEffect(() => {
-        if (!title) getCourseDetails();
+        getCourseDetails();
     }, []);
 
     return (
@@ -247,7 +255,7 @@ const CreateCourse = () => {
                                 </Button>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <img src={course.imageUrl} alt="Course"
+                                <img src={sampleImage || course.imageUrl} alt="Course"
                                      className="w-full h-64 object-cover rounded-lg"/>
                             </div>
                         </div>

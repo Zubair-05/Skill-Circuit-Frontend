@@ -78,15 +78,14 @@ const ChapterForm = () => {
                 withCredentials: true,
             })
             const {url, fileUrl} = response.data;
-            await uploadFileToS3(url, file, fileUrl);
-            dispatch(setVideoUrl(filePath));
+            await uploadFileToS3(url, file, filePath, fileUrl);
             console.log(`fetched pre-signed url successfully`);
         } catch (e) {
             console.log(`error fetching url`, e);
         }
     }
 
-    const uploadFileToS3 = async (url, file, fileUrl) => {
+    const uploadFileToS3 = async (url, file, filePath, fileUrl) => {
         setUploading(true);
         try {
             console.log(`file details:`, file);
@@ -104,6 +103,7 @@ const ChapterForm = () => {
                     }
                 },
             )
+            dispatch(setVideoUrl(filePath));
             setSampleVideo(fileUrl);
             console.log(`response on uploading image is`, response);
             console.log(`file successfully uploaded to s3`)
@@ -208,7 +208,7 @@ const ChapterForm = () => {
                             {/* Conditionally render the video or the icon with upload button */}
                             {video.videoUrl ? (
                                 <video
-                                    src={video.videoUrl || sampleVideo}
+                                    src={sampleVideo || video.videoUrl }
                                     className="absolute inset-0 w-full h-full object-cover"
                                     controls  // Optionally add controls to the video
                                 />
