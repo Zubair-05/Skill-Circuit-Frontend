@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button"; // Adjust import according to your file structure
-import { Card } from "@/components/ui/card"; // Adjust import according to your file structure
+import { Button } from "@/components/ui/button.jsx"; // Adjust import according to your file structure
+import { Card } from "@/components/ui/card.jsx"; // Adjust import according to your file structure
 // import { Heading } from "@/components/ui/heading"; // Adjust import according to your file structure
 import axios from "axios";
 

@@ -12,7 +12,7 @@ function Landing() {
                 <p className="text-gray-700 text-xl mb-8">
                     Learn from the best instructors and grow your skills from anywhere in the world.
                 </p>
-                <a href="/courses" className="bg-blue-500 text-white py-3 px-8 rounded-lg text-lg hover:bg-blue-600 transition-colors">
+                <a href="/Student/Courses" className="bg-blue-500 text-white py-3 px-8 rounded-lg text-lg hover:bg-blue-600 transition-colors">
                     Browse Courses
                 </a>
             </section>

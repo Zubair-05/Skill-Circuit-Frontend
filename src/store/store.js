@@ -4,6 +4,7 @@ import videoReducer from './features/videoSlice.js';
 import userReducer from './features/userSlice.js';
 import cartReducer from './features/cartSlice.js';
 import authReducer from './features/authSlice.js';
+import modeReducer from './features/modeSlice.js';
 const store = configureStore({
     reducer: {
         course: courseReducer,
@@ -11,6 +12,7 @@ const store = configureStore({
         user: userReducer,
         cart: cartReducer,
         auth: authReducer,
+        mode: modeReducer
     },
 })
 

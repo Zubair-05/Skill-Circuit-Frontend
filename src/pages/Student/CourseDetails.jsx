@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {getApiCall, postApiCall} from "@/utils/apiHelper.js";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card.jsx";
+import { Button } from "@/components/ui/button.jsx";
 import {useNavigate} from "react-router-dom";
 
 const CourseDetails = () => {

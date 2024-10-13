@@ -3,20 +3,21 @@ import {useState} from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Signin from '@/pages/Signin.jsx';
 import Signup from '@/pages/Signup.jsx';
-import Courses from '@/pages/Courses.jsx';
-import CourseDetails from '@/pages/CourseDetails.jsx';
+import Courses from '@/pages/Student/Courses.jsx';
+import CourseDetails from '@/pages/Student/CourseDetails.jsx';
 import Navbar from '@/components/Navbar.jsx';
 import Footer from '@/components/Footer.jsx';
-import CreateCourse from "@/pages/CreateCourse.jsx";
-import CourseTitlePage from "@/pages/CourseTitlePage.jsx";
-import VideoUploadPage from "@/pages/VideoUploadPage.jsx";
-import StripeConnect from "@/pages/StripeConnect.jsx";
-import Cart from "@/pages/Cart.jsx";
+import CreateCourse from "@/pages/Teacher/CreateCourse.jsx";
+import CourseTitlePage from "@/pages/Teacher/CourseTitlePage.jsx";
+import VideoUploadPage from "@/pages/Teacher/VideoUploadPage.jsx";
+import StripeConnect from "@/pages/Teacher/StripeConnect.jsx";
+import Cart from "@/pages/Student/Cart.jsx";
 import Profile from "@/pages/Profile.jsx";
 import PrivateRoutes from "./utils/PrivateRoute.jsx"
-import PaymentSuccess from "@/pages/PaymentSuccess.jsx";
-import PaymentFailure from "@/pages/PaymentFailure.jsx";
-import Billing from "@/pages/Billing.jsx"
+import PaymentSuccess from "@/pages/Student/PaymentSuccess.jsx";
+import PaymentFailure from "@/pages/Student/PaymentFailure.jsx";
+import Billing from "@/pages/Teacher/Billing.jsx"
+import InstructorCourses from "@/pages/Teacher/InstructorCourses.jsx";
 
 
 function App() {
@@ -34,16 +35,18 @@ function App() {
                     <Route path="/signin" element={<Signin />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route element={<PrivateRoutes />}>
+                        {/*Techer mode*/}
+                        <Route path="/teacher/create-course" element={<CourseTitlePage />} />
+                        <Route path="/teacher/course-create/:id" element={<CreateCourse />} />
+                        <Route path='/teacher/course-create/:id/video-upload/:id1' element={<VideoUploadPage />} />
+                        <Route path="/teacher/billing" element={<Billing/>} />
+                        <Route path="/teacher" element={<InstructorCourses/>} />
+                        {/*student mode*/}
                         <Route path="/" element={<Courses />} />
                         <Route path="/courses/:id" element={<CourseDetails />} />
-                        <Route path="/create-course" element={<CourseTitlePage />} />
-                        <Route path="/course-create/:id" element={<CreateCourse />} />
-                        <Route path='/course-create/:id/video-upload/:id1' element={<VideoUploadPage />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/payment/success" element={<PaymentSuccess />} />
                         <Route path="/payment/failure" element={<PaymentFailure />} />
-                        <Route path="/billing" element={<Billing/>} />
-                        {/* Add other protected routes here */}
                     </Route>
                 </Routes>
             </div>

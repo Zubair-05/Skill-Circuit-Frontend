@@ -1,8 +1,8 @@
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {Select, SelectTrigger, SelectValue, SelectContent, SelectItem} from "@/components/ui/select";
-import {Button} from "@/components/ui/button";
+import {Label} from "@/components/ui/label.jsx";
+import {Input} from "@/components/ui/input.jsx";
+import {Textarea} from "@/components/ui/textarea.jsx";
+import {Select, SelectTrigger, SelectValue, SelectContent, SelectItem} from "@/components/ui/select.jsx";
+import {Button} from "@/components/ui/button.jsx";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addCourseChapters, setImageUrl, updateChapter} from "@/store/features/courseSlice.js";
@@ -38,7 +38,7 @@ const ChapterForm = () => {
             })
             console.log(`course upload`, response);
             dispatch(updateChapter({}))
-            navigate(`/course-create/${courseId}`);
+            navigate(`teacher/course-create/${courseId}`);
 
         } catch (error) {
             console.error(error)
@@ -51,7 +51,7 @@ const ChapterForm = () => {
             const response = await axios.delete(path, {
                 withCredentials: true
             })
-            navigate(`/course-create/${courseId}`);
+            navigate(`teacher/course-create/${courseId}`);
         } catch (err) {
             console.error(err)
         }
@@ -171,7 +171,7 @@ const ChapterForm = () => {
                     <div className="flex justify-end space-x-4">
                         <Button
                             variant="secondary"
-                            onClick={() => navigate(`/course-create/${courseId}`)}
+                            onClick={() => navigate(`teacher/course-create/${courseId}`)}
                         >Go Back</Button>
                         <Button
                             onClick={handlePublish}
