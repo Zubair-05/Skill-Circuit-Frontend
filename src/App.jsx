@@ -14,6 +14,11 @@ import StripeConnect from "@/pages/StripeConnect.jsx";
 import Cart from "@/pages/Cart.jsx";
 import Profile from "@/pages/Profile.jsx";
 import PrivateRoutes from "./utils/PrivateRoute.jsx"
+import PaymentSuccess from "@/pages/PaymentSuccess.jsx";
+import PaymentFailure from "@/pages/PaymentFailure.jsx";
+import Billing from "@/pages/Billing.jsx"
+
+
 function App() {
     const [isTeacherMode, setIsTeacherMode] = useState(false); // State for toggling modes
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -35,6 +40,9 @@ function App() {
                         <Route path="/course-create/:id" element={<CreateCourse />} />
                         <Route path='/course-create/:id/video-upload/:id1' element={<VideoUploadPage />} />
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/payment/success" element={<PaymentSuccess />} />
+                        <Route path="/payment/failure" element={<PaymentFailure />} />
+                        <Route path="/billing" element={<Billing/>} />
                         {/* Add other protected routes here */}
                     </Route>
                 </Routes>

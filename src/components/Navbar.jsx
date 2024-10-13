@@ -75,6 +75,7 @@ function Navbar() {
                                 <DropdownMenuItem onClick={() => navigate('/create-course')}>Create Course</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => navigate('/cart')}>Cart</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/billing')}>Billing</DropdownMenuItem>
                                 <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

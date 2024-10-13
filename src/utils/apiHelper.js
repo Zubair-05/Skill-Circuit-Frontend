@@ -23,6 +23,7 @@ export const postApiCall = async (path, body, params, query, headers) => {
             params: params
         })
         console.log(response)
+        return response;
     } catch (err){
         console.log(err);
         throw err;

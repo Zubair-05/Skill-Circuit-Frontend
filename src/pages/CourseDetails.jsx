@@ -34,6 +34,22 @@ const CourseDetails = () => {
         }
     }
 
+    const buyCourse = async () => {
+        try{
+            const response = await postApiCall(`/enroll`, {
+                courseId: courseId
+            });
+            console.log(`response is`, response)
+            if (response?.data?.sessionUrl) {
+                window.location.href = response.data.sessionUrl;
+            } else {
+                console.log('Failed to create Stripe session');
+            }
+        } catch (err){
+            console.log(err);
+        }
+    }
+
     return (
         <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-6xl px-4 mx-auto py-6">
             {/* Left Section: Course Details */}
@@ -92,7 +108,9 @@ const CourseDetails = () => {
                                 size="lg" className="bg-indigo-600 hover:bg-indigo-700">
                                 Add to Cart
                             </Button>
-                            <Button size="lg" className="bg-green-600 hover:bg-green-700">
+                            <Button
+                                onClick={buyCourse}
+                                size="lg" className="bg-green-600 hover:bg-green-700">
                                 Buy Now
                             </Button>
                         </div>
