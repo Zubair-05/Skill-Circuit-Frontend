@@ -12,6 +12,8 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {setMode} from "@/store/features/modeSlice.js";
 import {setUserDetails} from "@/store/features/userSlice.js";
+import {setIsAuthenticated} from "@/store/features/authSlice.js";
+import {getApiCall} from "@/utils/apiHelper.js";
 
 function Navbar() {
     const navigate = useNavigate();
@@ -20,10 +22,21 @@ function Navbar() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const mode = useSelector(state => state.mode.mode);
 
-    const toggleMode = () => {
+    const toggleMode = async () => {
         if (mode === 'student') {
             dispatch(setMode('teacher'));
-            navigate('/teacher')
+            try{
+                console.log(`making call to fetch stripe status`)
+                const response = await getApiCall(`/stripe/status`);
+                if(response?.data?.isActivated){
+                    navigate('/teacher')
+                } else {
+                    navigate('/teacher/billing')
+                }
+            } catch (err){
+                console.log(err);
+            }
+            navigate('/teacher/billing')
         } else {
             dispatch(setMode('student'));
             navigate('/')
