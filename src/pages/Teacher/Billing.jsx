@@ -6,23 +6,23 @@ import axios from "axios";
 import {postApiCall, getApiCall} from "@/utils/apiHelper.js";
 
 const Billing = () => {
-    const [isConnected, setIsConnected] = useState(true);
+    const [isConnected, setIsConnected] = useState(false);
 
-    // useEffect(() => {
-    //     // Fetch the user's Stripe connection status
-    //     const fetchStripeConnectionStatus = async () => {
-    //         try {
-    //             const response = await axios.get(`${process.env.BASE_URL}/stripe/status`, {
-    //                 withCredentials: true,
-    //             });
-    //             setIsConnected(response.data.isActivated);
-    //         } catch (error) {
-    //             console.error("Error fetching Stripe connection status:", error);
-    //         }
-    //     };
-    //
-    //     fetchStripeConnectionStatus();
-    // }, []);
+    useEffect(() => {
+        // Fetch the user's Stripe connection status
+        const fetchStripeConnectionStatus = async () => {
+            try {
+                const response = await axios.get(`${process.env.BASE_URL}/stripe/status`, {
+                    withCredentials: true,
+                });
+                setIsConnected(response.data.isActivated);
+            } catch (error) {
+                console.error("Error fetching Stripe connection status:", error);
+            }
+        };
+
+        fetchStripeConnectionStatus();
+    }, []);
 
     const handleConnectStripe = async () => {
         try {

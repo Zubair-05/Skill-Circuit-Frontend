@@ -22,7 +22,7 @@ function SignUp() {
             },{
                 withCredentials: true,
             })
-            navigate('/courses')
+            navigate('/')
             console.log(response)
         } catch (err){
             console.log(err);

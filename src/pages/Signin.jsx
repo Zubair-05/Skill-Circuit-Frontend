@@ -1,13 +1,32 @@
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {useState} from "react";
+import {postApiCall} from "@/utils/apiHelper.js";
 function Signin() {
     const navigate = useNavigate()
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const loginWithGoogle = async () => {
         console.log("Login with Google")
         window.location.href = `${process.env.BASE_URL}/auth/google`;
     }
 
+    const loginWithEmail = async (e) => {
+        e.preventDefault()
+        console.log("login with Email")
+        try{
+            const response = await postApiCall('/auth/signin', {
+                email,
+                password
+            });
+            navigate('/')
+            console.log(response);
+        } catch (err){
+            console.log(err)
+        }
+    }
 
 
     return (
@@ -22,6 +41,8 @@ function Signin() {
                             id="email"
                             className="w-full mt-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <div>
@@ -31,11 +52,14 @@ function Signin() {
                             id="password"
                             className="w-full mt-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Create a password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                        onClick={loginWithEmail}
                     >
                        Sign in
                     </button>

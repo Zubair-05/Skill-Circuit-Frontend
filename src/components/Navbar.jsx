@@ -44,19 +44,21 @@ function Navbar() {
     };
 
     const handleLogout = async () => {
+        console.log(`calling logout function`)
         const url = process.env.BASE_URL + `/logout`;
         fetch(url, {
             method: 'GET',
             credentials: 'include',
         })
             .then(() => {
-                setIsAuthenticated(false);
+                dispatch(setIsAuthenticated(false));
                 navigate('/signin');
                 // Optionally redirect the user to the homepage or login page
             })
             .catch(err => {
                 console.error('Error logging out:', err);
             });
+
     };
 
     return (
@@ -74,7 +76,7 @@ function Navbar() {
                             </button>
                             <DropdownMenu className="mr-4">
                                 <DropdownMenuTrigger>
-                                    <Avatar className="cursor-pointer" onClick={handleLogout}>
+                                    <Avatar className="cursor-pointer">
                                         <AvatarImage src="https://github.com/shadcn.png"/>
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
