@@ -18,7 +18,8 @@ import PaymentSuccess from "@/pages/Student/PaymentSuccess.jsx";
 import PaymentFailure from "@/pages/Student/PaymentFailure.jsx";
 import Billing from "@/pages/Teacher/Billing.jsx"
 import InstructorCourses from "@/pages/Teacher/InstructorCourses.jsx";
-
+import PurchasedCourses from "@/pages/Student/PurchasedCourses.jsx";
+import CourseContent from "@/pages/Student/CourseContent.jsx";
 
 function App() {
     const [isTeacherMode, setIsTeacherMode] = useState(false); // State for toggling modes
@@ -28,7 +29,7 @@ function App() {
     return (
         <Router>
             <Navbar />
-            <div className="container mx-auto px-4 py-6">
+            <div className="container mx-auto py-6">
                 <Routes>
 
                     {/* Protected routes */}
@@ -45,8 +46,10 @@ function App() {
                         <Route path="/" element={<Courses />} />
                         <Route path="/courses/:id" element={<CourseDetails />} />
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/purchased/courses" element={<PurchasedCourses/>}/>
                         <Route path="/payment/success" element={<PaymentSuccess />} />
                         <Route path="/payment/failure" element={<PaymentFailure />} />
+                        <Route path="/course/content/:courseId" element={<CourseContent/>}/>
                     </Route>
                 </Routes>
             </div>

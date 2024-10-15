@@ -86,7 +86,7 @@ const CreateCourse = () => {
                     withCredentials: true,
                 })
             const chapterId = response?.data?.chapter;
-            navigate(`teacher/video-upload/${chapterId}`);
+            navigate(`video-upload/${chapterId}`);
             dispatch(setChapter({}));
             dispatch(setChapterId(chapterId));
         } catch (e) {
@@ -96,7 +96,7 @@ const CreateCourse = () => {
 
     const handleEditChapter = (chapter) => {
         dispatch(setChapter(chapter));
-        navigate(`teacher/video-upload/${chapter._id}`);
+        navigate(`video-upload/${chapter._id}`);
     };
 
     const triggerFileInput = () => {

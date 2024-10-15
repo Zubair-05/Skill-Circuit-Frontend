@@ -38,7 +38,7 @@ const ChapterForm = () => {
             })
             console.log(`course upload`, response);
             dispatch(updateChapter({}))
-            navigate(`teacher/course-create/${courseId}`);
+            navigate(`/teacher/course-create/${courseId}`);
 
         } catch (error) {
             console.error(error)

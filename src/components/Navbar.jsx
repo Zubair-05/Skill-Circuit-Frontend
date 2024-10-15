@@ -89,6 +89,7 @@ function Navbar() {
                                             <>
                                                 <DropdownMenuItem onClick={() => navigate('/')}>Courses</DropdownMenuItem>
                                                 <DropdownMenuItem onClick={() => navigate('/cart')}>Cart</DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => navigate('/purchased/courses')}>Purchases</DropdownMenuItem>
                                             </>
                                         ) : (
                                             <>
