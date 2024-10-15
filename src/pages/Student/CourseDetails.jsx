@@ -8,6 +8,7 @@ const CourseDetails = () => {
     const navigate = useNavigate();
 
     const [course, setCourse] = useState({});
+    const [isEnrolled, setIsEnrolled] = useState(false);
     const path = window.location.pathname;
     const courseId = path.split("/").pop();
 
@@ -16,6 +17,7 @@ const CourseDetails = () => {
 
             const response = await getApiCall(`/courses/${courseId}`);
             setCourse(response?.data?.course);
+            setIsEnrolled(response?.data?.isEnrolled)
         } catch (err) {
             console.log(err);
         }
@@ -98,22 +100,46 @@ const CourseDetails = () => {
                 />
                 <Card>
                     <CardContent className="grid gap-4 p-5">
+                        {/* Course Title and Price */}
                         <div className="flex items-center justify-between">
                             <h3 className="font-bold text-2xl">{course.title}</h3>
-                            <div className="text-2xl font-bold">₹{course.price}</div>
+                            {!isEnrolled && (
+                                <div className="text-2xl font-bold">₹{course.price}</div>
+                            )}
                         </div>
-                        <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                            <Button
-                                onClick={handleAddToCart}
-                                size="lg" className="bg-indigo-600 hover:bg-indigo-700">
-                                Add to Cart
-                            </Button>
-                            <Button
-                                onClick={buyCourse}
-                                size="lg" className="bg-green-600 hover:bg-green-700">
-                                Buy Now
-                            </Button>
-                        </div>
+
+                        {/* Conditional Rendering based on Enrollment */}
+                        {!isEnrolled ? (
+                            // If the user is not enrolled, show Add to Cart and Buy Now buttons
+                            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                                <Button
+                                    onClick={handleAddToCart}
+                                    size="lg"
+                                    className="bg-indigo-600 hover:bg-indigo-700"
+                                >
+                                    Add to Cart
+                                </Button>
+                                <Button
+                                    onClick={buyCourse}
+                                    size="lg"
+                                    className="bg-green-600 hover:bg-green-700"
+                                >
+                                    Buy Now
+                                </Button>
+                            </div>
+                        ) : (
+                            // If the user is enrolled, show the Go To Course button
+                            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                                <Button
+                                    onClick={() => navigate(`/course/content/${course.id}`)}
+                                    size="lg"
+                                    className="bg-blue-600 hover:bg-blue-700"
+                                >
+                                    Go To Course
+                                </Button>
+                            </div>
+                        )}
+
                         {/* Teacher Information */}
                         {course.teacher && (
                             <div className="mt-4 flex items-center space-x-4">
@@ -130,6 +156,7 @@ const CourseDetails = () => {
                         )}
                     </CardContent>
                 </Card>
+
             </div>
         </div>
     );
