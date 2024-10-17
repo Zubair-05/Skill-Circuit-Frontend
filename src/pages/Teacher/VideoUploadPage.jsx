@@ -39,7 +39,6 @@ const ChapterForm = () => {
             console.log(`course upload`, response);
             dispatch(updateChapter({}))
             navigate(`/teacher/course-create/${courseId}`);
-
         } catch (error) {
             console.error(error)
         }
@@ -51,7 +50,7 @@ const ChapterForm = () => {
             const response = await axios.delete(path, {
                 withCredentials: true
             })
-            navigate(`teacher/course-create/${courseId}`);
+            navigate(`/teacher/course-create/${courseId}`);
         } catch (err) {
             console.error(err)
         }
@@ -171,7 +170,7 @@ const ChapterForm = () => {
                     <div className="flex justify-end space-x-4">
                         <Button
                             variant="secondary"
-                            onClick={() => navigate(`teacher/course-create/${courseId}`)}
+                            onClick={() => navigate(`/teacher/course-create/${courseId}`)}
                         >Go Back</Button>
                         <Button
                             onClick={handlePublish}

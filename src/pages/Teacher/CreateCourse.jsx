@@ -68,6 +68,7 @@ const CreateCourse = () => {
             }, {
                 withCredentials: true,
             })
+            navigate('/teacher')
             console.log(`course updated successfully`, response.data);
         } catch (e) {
             console.log(`error updating the course`);
@@ -76,6 +77,7 @@ const CreateCourse = () => {
 
     const handleAddChapter = async () => {
         try {
+            await updateCourse(false);
             console.log(`base url is : `, process.env.BASE_URL)
             const url = process.env.BASE_URL + `/course/chapter/create`;
             const response = await axios.post(url,

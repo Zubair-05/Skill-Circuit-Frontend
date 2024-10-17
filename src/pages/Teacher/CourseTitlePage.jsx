@@ -41,7 +41,7 @@ const CourseTitlePage = () => {
             dispatch(setId(courseId));
             console.log(`courseId: ${courseId}`);
             // Navigate to the course creation page with courseId
-            navigate(`teacher/course-create/${courseId}`);
+            navigate(`/teacher/course-create/${courseId}`);
 
         } catch (error) {
             setError('Error creating course. Please try again.');

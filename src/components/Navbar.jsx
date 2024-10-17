@@ -14,6 +14,8 @@ import {setMode} from "@/store/features/modeSlice.js";
 import {setUserDetails} from "@/store/features/userSlice.js";
 import {setIsAuthenticated} from "@/store/features/authSlice.js";
 import {getApiCall} from "@/utils/apiHelper.js";
+import axios from "axios";
+import {setId} from "@/store/features/courseSlice.js";
 
 function Navbar() {
     const navigate = useNavigate();
@@ -58,8 +60,28 @@ function Navbar() {
             .catch(err => {
                 console.error('Error logging out:', err);
             });
-
     };
+
+    const createCourse = async() => {
+        try {
+            // API call to save the course title
+            const url = `${process.env.BASE_URL}/courses/create`;
+            const response = await axios.post(url,{},
+                {
+                    withCredentials: true,
+                }
+            );
+
+            // Assuming the backend returns courseId
+            const {courseId} = response.data;
+            dispatch(setId(courseId));
+            console.log(`courseId: ${courseId}`);
+            navigate(`/teacher/course-create/${courseId}`);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <header className="bg-white shadow-md w-full">
@@ -93,7 +115,7 @@ function Navbar() {
                                             </>
                                         ) : (
                                             <>
-                                                <DropdownMenuItem onClick={() => navigate('/teacher/create-course')}>Create Course</DropdownMenuItem>
+                                                <DropdownMenuItem onClick={createCourse}>Create Course</DropdownMenuItem>
                                                 <DropdownMenuItem onClick={() => navigate('/teacher/billing')}>Billing</DropdownMenuItem>
                                                 <DropdownMenuItem onClick={() => navigate('/teacher')}>Courses</DropdownMenuItem>
                                             </>

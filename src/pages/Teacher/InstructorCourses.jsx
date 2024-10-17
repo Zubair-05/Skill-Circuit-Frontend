@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {useSelector} from "react-redux";
 import {getApiCall} from "@/utils/apiHelper.js";
+import {setId} from "@/store/features/courseSlice.js";
 
 const InstructorCourses = () => {
     const [courses, setCourses] = useState([]);
@@ -26,6 +27,27 @@ const InstructorCourses = () => {
     const handleEdit = (courseId) => {
         navigate(`/teacher/course-create/${courseId}`);
     };
+
+    const createCourse = async() => {
+        try {
+            // API call to save the course title
+            const url = `${process.env.BASE_URL}/courses/create`;
+            const response = await axios.post(url,{},
+                {
+                    withCredentials: true,
+                }
+            );
+
+            // Assuming the backend returns courseId
+            const {courseId} = response.data;
+            dispatch(setId(courseId));
+            console.log(`courseId: ${courseId}`);
+            navigate(`/teacher/course-create/${courseId}`);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const handlePublish = async (courseId) => {
         try {
@@ -53,7 +75,7 @@ const InstructorCourses = () => {
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-semibold mb-6">Your Courses</h1>
             <button
-                onClick={() => navigate('/teacher/create-course')} // Adjust the route as needed
+                onClick={createCourse} // Adjust the route as needed
                 className="mb-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
             >
                 Create New Course

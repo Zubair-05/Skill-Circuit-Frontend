@@ -33,7 +33,7 @@ const courseSlice = createSlice({
             state.imageUrl = action.payload
         },
         setIsPublished: (state, action) => {
-            state.published = action.payload
+            state.isPublished = action.payload
         },
         addCourseChapters: (state, action) => {
             state.courseChapters.push(action.payload)
